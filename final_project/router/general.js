@@ -4,15 +4,37 @@ let isValid = require("./auth_users.js").isValid;
 let users = require("./auth_users.js").users;
 const public_users = express.Router();
 
+const doesExist = (username)=>{
+  let userswithsamename = users.filter((user)=>{
+    return user.username === username;
+  });
+  if(userswithsamename.length > 0){
+    return true;
+  } else {
+    return false;
+  }
+}
+
 
 public_users.post("/register", (req,res) => {
-  //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+    const username = req.body.username;
+    const password = req.body.password;
+  
+    if (username && password) {
+      if (!doesExist(username)) { 
+        users.push({"username":username,"password":password});
+        return res.status(200).json({message: "User successfully registred. Now you can login"});
+      } else {
+        return res.status(404).json({message: "User already exists!"});    
+      }
+    } 
+    return res.status(404).json({message: "Unable to register user."});
+  //return res.status(300).json({message: "Yet to be implemented"});
 });
 
 // Get the book list available in the shop
 public_users.get('/',function (req, res) {
-  res.send(JSON.stringify(books,null,4));
+    return res.send(JSON.stringify(books,null,4));
 });
 
 // Get book details based on ISBN
@@ -23,7 +45,7 @@ public_users.get('/isbn/:isbn',function (req, res) {
     return res.send(`ISBN not found, enter a number from 1 to ${booksNumber}`);
   }
   else {
-    res.send(books[isbn]);
+    return res.send(books[isbn]);
   }
  });
   
@@ -39,10 +61,10 @@ public_users.get('/author/:author',function (req, res) {
     }
   }
   if(!authors.length) {
-    res.send("Author not found");
+    return res.send("Author not found");
   }
   else {
-    res.send(authors);
+    return res.send(authors);
   }
 });
 
@@ -58,10 +80,10 @@ public_users.get('/title/:title',function (req, res) {
       }
     }
     if(!titles.length) {
-      res.send("Title not found");
+      return res.send("Title not found");
     }
     else {
-      res.send(titles);
+      return res.send(titles);
     }
 });
 
@@ -73,7 +95,7 @@ public_users.get('/review/:isbn',function (req, res) {
       return res.send(`ISBN not found, enter a number from 1 to ${booksNumber}`);
     }
     else {
-      res.send(books[isbn]['reviews']);
+      return res.send(books[isbn]['reviews']);
     }
 });
 
