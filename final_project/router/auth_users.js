@@ -1,6 +1,7 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 let books = require("./booksdb.js");
+const session = require('express-session');
 const regd_users = express.Router();
 
 let users = [];
@@ -55,6 +56,13 @@ regd_users.post("/login", (req,res) => {
 // Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
     let isbn = req.params.isbn;
+    if (req.session.authorization) {
+        activeuser = req.session.authorization['username'];
+    }
+    const obj = books[isbn]['reviews'];
+    obj.name = activeuser;
+    obj.review = req.body.review;
+    res.send(obj['name'] + ' ' + obj['review']);
     //return res.status(300).json({message: "Yet to be implemented"});
 });
 

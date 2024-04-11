@@ -83,7 +83,7 @@ public_users.get('/review/:isbn',function (req, res) {
       return res.send(`ISBN not found, enter a number from 1 to ${booksNumber}`);
     }
     else {
-      return res.send(books[isbn]['reviews']);
+      return res.send(books[isbn]['reviews']['name']);
     }
 });
 
