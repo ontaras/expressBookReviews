@@ -20,7 +20,7 @@ public_users.get('/isbn/:isbn',function (req, res) {
   let isbn = req.params.isbn;
   let booksNumber = Object.keys(books).length;
   if(isbn < 1 || isbn > booksNumber) {
-    return res.send(`ISBN not found, enter a number from 1 to ${books_number}`);
+    return res.send(`ISBN not found, enter a number from 1 to ${booksNumber}`);
   }
   else {
     res.send(books[isbn]);
@@ -70,7 +70,7 @@ public_users.get('/review/:isbn',function (req, res) {
     let isbn = req.params.isbn;
     let booksNumber = Object.keys(books).length;
     if(isbn < 1 || isbn > booksNumber) {
-      return res.send(`ISBN not found, enter a number from 1 to ${books_number}`);
+      return res.send(`ISBN not found, enter a number from 1 to ${booksNumber}`);
     }
     else {
       res.send(books[isbn]['reviews']);
