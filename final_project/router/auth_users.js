@@ -50,7 +50,6 @@ regd_users.post("/login", (req,res) => {
     } else {
         return res.status(208).json({message: "Invalid Login. Check username and password"});
     }
-  // return res.status(300).json({message: "Yet to be implemented"});
 });
 
 // Add a book review
@@ -60,23 +59,20 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
         activeuser = req.session.authorization['username'];
     }
 
-    //const obj = books[isbn]['reviews'];
-    let name = 'name';
-    let review = 'review';
+    books[isbn]['reviews'][activeuser] = req.body.review;
+    
+    return res.status(200).json({message: books[isbn]['reviews']});
+});
 
-    let length = Object.keys(books[isbn]['reviews']).length;
-
-    if(!length) {
-        books[isbn]['reviews']['name'] = activeuser;
-        books[isbn]['reviews']['review'] = req.body.review;
-    } else {
-        res.send('another logic');
+// Delete a book review
+regd_users.delete("/auth/review/:isbn", (req, res) => {
+    let isbn = req.params.isbn;
+    if (req.session.authorization) {
+        activeuser = req.session.authorization['username'];
     }
-    let length1 = Object.keys(books[isbn]['reviews']).length;
-    
-    
-    res.send(books[isbn]['reviews']['name'] + ' ' + books[isbn]['reviews']['review'] + ' ' + length + ' ' + length1);
-    //return res.status(300).json({message: "Yet to be implemented"});
+
+    delete books[isbn]['reviews'];
+    return res.status(200).json({message: `Book with ISBN #${isbn} deleted`});
 });
 
 module.exports.authenticated = regd_users;
