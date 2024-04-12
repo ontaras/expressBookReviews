@@ -29,7 +29,7 @@ public_users.post("/register", (req,res) => {
 // Promise - get the book list available in the shop
 public_users.get('/',function (req, res) {
     return new Promise((resolve, reject) => {
-        let data = res.send(JSON.stringify(books,null,4));
+        let data = res.send("books: " + JSON.stringify(books,null,4));
         resolve(data);
     })
 });
@@ -102,7 +102,7 @@ public_users.get('/author/:author',function (req, res) {
         }
     })
     myPromise.then(
-        (authors) => res.send(authors),
+        (authors) => res.send("booksbyauthor: " + JSON.stringify(authors,null,4)),
         (err) => res.send(err)
     );
   });
@@ -146,7 +146,7 @@ public_users.get('/title/:title',function (req, res) {
         }
     })
     myPromise.then(
-        (titles) => res.send(titles),
+        (titles) => res.send("booksbytitle: " + JSON.stringify(titles,null,4)),
         (err) => res.send(err)
     )
 });

@@ -55,13 +55,14 @@ regd_users.post("/login", (req,res) => {
 // Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
     let isbn = req.params.isbn;
+    let review = req.query;
     if (req.session.authorization) {
-        activeuser = req.session.authorization['username'];
+         activeuser = req.session.authorization['username'];
     }
 
-    books[isbn]['reviews'][activeuser] = req.body.review;
-    
-    return res.status(200).json({message: books[isbn]['reviews']});
+    books[isbn]['reviews'][activeuser] = review;
+
+    return res.status(200).json({message: `Customer ${activeuser} has left review for the book with ISBN #${isbn}: ${books[isbn]['reviews'][activeuser]['review']}`});
 });
 
 // Delete a book review
@@ -72,7 +73,7 @@ regd_users.delete("/auth/review/:isbn", (req, res) => {
     }
 
     delete books[isbn]['reviews'];
-    return res.status(200).json({message: `Book with ISBN #${isbn} deleted`});
+    return res.status(200).json({message: `The review for the book with ISBN #${isbn} deleted by ${activeuser}`});
 });
 
 module.exports.authenticated = regd_users;
