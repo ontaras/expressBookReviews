@@ -59,10 +59,23 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
     if (req.session.authorization) {
         activeuser = req.session.authorization['username'];
     }
+
     const obj = books[isbn]['reviews'];
-    obj.name = activeuser;
-    obj.review = req.body.review;
-    res.send(obj['name'] + ' ' + obj['review']);
+    let name = 'name';
+    let review = 'review';
+
+    let length = Object.keys(obj).length;
+
+    if(!length) {
+        obj['name'] = activeuser;
+        obj['review'] = req.body.review;
+    } else {
+        res.send('another logic');
+    }
+    let length1 = Object.keys(obj).length;
+    
+    
+    res.send(obj['name'] + ' ' + obj['review'] + ' ' + length + ' ' + length1);
     //return res.status(300).json({message: "Yet to be implemented"});
 });
 
